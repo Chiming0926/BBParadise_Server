@@ -1,0 +1,10 @@
+D:\workspace\BBParadise_Server\BBParadise_Server\bin\Debug\BBParadise_Server.exe.config
+D:\workspace\BBParadise_Server\BBParadise_Server\bin\Debug\BBParadise_Server.exe
+D:\workspace\BBParadise_Server\BBParadise_Server\bin\Debug\BBParadise_Server.pdb
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.csprojResolveAssemblyReference.cache
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.Properties.Resources.resources
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.csproj.GenerateResource.Cache
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.exe
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.pdb
+D:\workspace\BBParadise_Server\BBParadise_Server\bin\Debug\arcalet.dll
+D:\workspace\BBParadise_Server\BBParadise_Server\obj\Debug\BBParadise_Server.BBParadise.resources
