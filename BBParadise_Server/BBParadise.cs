@@ -15,7 +15,7 @@ namespace BBParadise_Server
         string gguid = "7245577f-4961-7642-a64c-ba5bb008892c";
         string sguid = "52a06444-ff13-654b-bfa1-29da9f7124dd";
 
-        string iguid_player = "";
+        string iguid_player = "2a0ccd1d-f564-f74f-b1c6-d2a6157b8b59";
         string sguid_game = "";
         string lguid = "";
 
@@ -54,7 +54,7 @@ namespace BBParadise_Server
 
         void MainMessageIn(string msg, int delay, ArcaletGame game)
         {
-        /*    try
+            try
             {
                 Console.WriteLine("MainMessageIn: " + msg);
                 string[] cmds = msg.Split(':');
@@ -65,7 +65,6 @@ namespace BBParadise_Server
                 }
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
-            */
         }
 
         void PrivateMessageIn(string msg, int delay, ArcaletGame game)
