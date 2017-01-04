@@ -75,7 +75,7 @@ namespace BBParadise_Server
                 string[] cmds = msg.Split(':');
                 switch (cmds[0])
                 {
-                //    case "match": DP_Match(cmds[1]); break;
+                    case "match": DP_Match(cmds[1]); break;
                 //    case "cancel": CancelMatchCheck(int.Parse(cmds[1])); break;
                 }
             }

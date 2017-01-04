@@ -10,7 +10,7 @@ namespace BBParadise_Server
     public partial class BBParadise
     {
         List<MatchModel> matchList = new List<MatchModel>();
-//        List<GameRoom> roomList = new List<GameRoom>();
+        List<GameRoom> roomList = new List<GameRoom>();
 
         void DP_Match(string msg)
         {
@@ -37,68 +37,67 @@ namespace BBParadise_Server
             {
                 lock (matchList)
                 {
-                    if (matchList.Count == 0)
+                    Console.WriteLine("Wait for Match User" + matchList.Count);
+                    if (matchList.Count <= 5)
                     {
                         matchList.Add(self);
+                        match_people.Text = matchList.Count.ToString();
+                        Console.WriteLine("Wait for Match User" + matchList.Count);
                     }
                     else
                     {
+                        GameRoom go = new GameRoom();
                         foreach (MatchModel target in matchList)
                         {
-                            //GameRoom go = new GameRoom();
-                            //go.model[0] = self;
-                            //go.model[1] = target;
-                            //DoMatch(go);
-                            //matchList.Remove(target);
-                            break;
+                            if (go.addPlayer(target) == false)
+                                break;
+                            matchList.Remove(target);
+                            match_people.Text = matchList.Count.ToString();
                         }
+                        DoMatch(go);
                     }
-                    //text3.Text = matchList.Count.ToString();
                 }
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
         }
 
-        void DoMatch(/*GameRoom go*/)
+        void DoMatch(GameRoom go)
         {
             ArcaletScene sn = new ArcaletScene(ag, sguid_game);
             sn.onMessageIn += GameMessageIn;
             sn.onCompletion += CB_EnterGameRoom;
 
-            //gameroom room = go;
-            //room.scene = sn;
-            //sn.token = room;
-            //sn.launch();
+            GameRoom room = go;
+            room.scene = sn;
+            sn.token = room;
+            sn.Launch();
         }
 
         void CB_EnterGameRoom(int code, ArcaletScene scene)
         {
-            //try
-            //{
-            //    GameRoom room = scene.token as GameRoom;
-            //    if (code == 0)
-            //    {
-            //        room.GameInitialize(this);
-            //        ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[0].matchCode, room.model[0].poid);
-            //        ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[1].matchCode, room.model[1].poid);
-            //        foreach (MatchModel model in room.model)
-            //        {
-            //            RoomPlayerinfoToken token = new RoomPlayerinfoToken();
-            //            token.account = model.account;
-            //            token.poid = model.poid;
-            //            token.room = room;
-            //            ArcaletItem.suGetItemInstance(ag, model.account, iguid_player, CB_GetPlayerInfomations, token);
-            //        }
-            //        AddRoomList(room);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("CB_EnterGameRoom Error: " + code);
-            //        SearchTarget(room.model[0]);
-            //        SearchTarget(room.model[1]);
-            //    }
-            //}
-            //catch (Exception) { }
+            try
+            {
+                GameRoom room = scene.token as GameRoom;
+                if (code == 0)
+                {
+//                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[0].matchCode, room.model[0].poid);
+//                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[1].matchCode, room.model[1].poid);
+                    foreach (MatchModel model in room.matchList)
+                    {
+                        //RoomPlayerinfoToken token = new RoomPlayerinfoToken();
+                        //token.account = model.account;
+                        //token.poid = model.poid;
+                        //token.room = room;
+                        //ArcaletItem.suGetItemInstance(ag, model.account, iguid_player, CB_GetPlayerInfomations, token);
+                    }
+                    AddRoomList(room);
+                }
+                else
+                {
+                    Console.WriteLine("CB_EnterGameRoom Error: " + code);
+                }
+            }
+            catch (Exception) { }
         }
 
         void CB_GetPlayerInfomations(int code, object data, object token)
@@ -156,100 +155,100 @@ namespace BBParadise_Server
             }
         }
 
-    //    void PlayerReady(string msg, GameRoom room)
-    //    {
-    //        int poid = int.Parse(msg);
-    //        foreach (MatchModel md in room.model)
-    //        {
-    //            if (md.poid == poid)
-    //            {
-    //                md.ready = true;
-    //                GameStartCheck(room);
-    //                break;
-    //            }
-    //        }
-    //    }
+        //    void PlayerReady(string msg, GameRoom room)
+        //    {
+        //        int poid = int.Parse(msg);
+        //        foreach (MatchModel md in room.model)
+        //        {
+        //            if (md.poid == poid)
+        //            {
+        //                md.ready = true;
+        //                GameStartCheck(room);
+        //                break;
+        //            }
+        //        }
+        //    }
 
-    //    void GameStartCheck(GameRoom room)
-    //    {
-    //        bool start = true;
-    //        if (room.gameover) start = false;
-    //        foreach (MatchModel md in room.model)
-    //        {
-    //            if (!md.getData) start = false;
-    //            if (!md.ready) start = false;
-    //            if (md.cancelMatch) start = false;
-    //        }
-    //        if (start)
-    //            GameStart(room);
-    //    }
+        //    void GameStartCheck(GameRoom room)
+        //    {
+        //        bool start = true;
+        //        if (room.gameover) start = false;
+        //        foreach (MatchModel md in room.model)
+        //        {
+        //            if (!md.getData) start = false;
+        //            if (!md.ready) start = false;
+        //            if (md.cancelMatch) start = false;
+        //        }
+        //        if (start)
+        //            GameStart(room);
+        //    }
 
-    //    void GameStart(GameRoom room)
-    //    {
-    //        room.aTimer.Enabled = false;
-    //        room.bTimer.Enabled = true;
-    //        room.turn = 1;
-    //        room.scene.Send("dp_start:" + room.model[0].poid);
-    //        foreach (MatchModel m in room.model)
-    //        {
-    //            room.scene.Send("dp_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
-    //        }
+        //    void GameStart(GameRoom room)
+        //    {
+        //        room.aTimer.Enabled = false;
+        //        room.bTimer.Enabled = true;
+        //        room.turn = 1;
+        //        room.scene.Send("dp_start:" + room.model[0].poid);
+        //        foreach (MatchModel m in room.model)
+        //        {
+        //            room.scene.Send("dp_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
+        //        }
 
-    //    }
+        //    }
 
-    //    void CancelMatchCheck(int poid)
-    //    {
-    //        lock (matchList)
-    //        {
-    //            foreach (MatchModel model in matchList)
-    //            {
-    //                if (model.poid == poid)
-    //                {
-    //                    matchList.Remove(model);
-    //                    text3.Text = matchList.Count.ToString();
-    //                    return;
-    //                }
-    //            }
-    //        }
+        //    void CancelMatchCheck(int poid)
+        //    {
+        //        lock (matchList)
+        //        {
+        //            foreach (MatchModel model in matchList)
+        //            {
+        //                if (model.poid == poid)
+        //                {
+        //                    matchList.Remove(model);
+        //                    text3.Text = matchList.Count.ToString();
+        //                    return;
+        //                }
+        //            }
+        //        }
 
-    //        lock (roomList)
-    //        {
-    //            foreach (GameRoom room in roomList)
-    //            {
-    //                foreach (MatchModel model in room.model)
-    //                {
-    //                    if (model.poid == poid)
-    //                        model.cancelMatch = true;
-    //                }
-    //            }
-    //        }
-    //    }
+        //        lock (roomList)
+        //        {
+        //            foreach (GameRoom room in roomList)
+        //            {
+        //                foreach (MatchModel model in room.model)
+        //                {
+        //                    if (model.poid == poid)
+        //                        model.cancelMatch = true;
+        //                }
+        //            }
+        //        }
+        //    }
 
-    //    void AddRoomList(GameRoom r)
-    //    {
-    //        lock (roomList)
-    //        {
-    //            roomList.Add(r);
-    //            text2.Text = roomList.Count.ToString();
-    //        }
-    //    }
+        void AddRoomList(GameRoom r)
+        {
+            lock (roomList)
+            {
+                roomList.Add(r);
+                GameRoom.Text = roomList.Count.ToString();
+            }
+        }
 
-    //    internal void RemoveRoomList(GameRoom r)
-    //    {
-    //        lock (roomList)
-    //        {
-    //            foreach (GameRoom room in roomList)
-    //            {
-    //                if (room == r)
-    //                {
-    //                    roomList.Remove(room);
-    //                    text2.Text = roomList.Count.ToString();
-    //                    return;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+        internal void RemoveRoomList(GameRoom r)
+        {
+            lock (roomList)
+            {
+                foreach (GameRoom room in roomList)
+                {
+                    if (room == r)
+                    {
+                        roomList.Remove(room);
+                        GameRoom.Text = roomList.Count.ToString();
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     //internal class RoomPlayerinfoToken
     //{
@@ -276,4 +275,4 @@ namespace BBParadise_Server
         internal bool cancelMatch = false;
     }
 }
-}
+

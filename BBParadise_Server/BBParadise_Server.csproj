@@ -55,6 +55,7 @@
     <Compile Include="BBParadise.Designer.cs">
       <DependentUpon>BBParadise.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameRoom.cs" />
     <Compile Include="Match.cs">
       <SubType>Form</SubType>
     </Compile>
