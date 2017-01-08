@@ -38,23 +38,26 @@ namespace BBParadise_Server
                 lock (matchList)
                 {
                     Console.WriteLine("Wait for Match User" + matchList.Count);
-                    if (matchList.Count <= 5)
+                    if (matchList.Count <= 4)
                     {
                         matchList.Add(self);
                         match_people.Text = matchList.Count.ToString();
-                        Console.WriteLine("Wait for Match User" + matchList.Count);
+                        Console.WriteLine(" in Wait for Match User" + matchList.Count);
                     }
                     else
                     {
                         GameRoom go = new GameRoom();
-                        foreach (MatchModel target in matchList)
+                        Console.WriteLine("before matchList.Count = " + matchList.Count);
+                        for (int i=0; i< matchList.Count; i++)
                         {
-                            if (go.addPlayer(target) == false)
+                            if (go.addPlayer(matchList[i]) == false)
                                 break;
-                            matchList.Remove(target);
                             match_people.Text = matchList.Count.ToString();
                         }
                         DoMatch(go);
+                        matchList.Clear();
+                        match_people.Text = matchList.Count.ToString();
+                        Console.WriteLine("after Wait for Match User" + matchList.Count);
                     }
                 }
             }
@@ -80,8 +83,9 @@ namespace BBParadise_Server
                 GameRoom room = scene.token as GameRoom;
                 if (code == 0)
                 {
-//                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[0].matchCode, room.model[0].poid);
-//                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[1].matchCode, room.model[1].poid);
+                    Console.WriteLine("CB_EnterGameRoom Success: ");
+                    //                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[0].matchCode, room.model[0].poid);
+                    //                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[1].matchCode, room.model[1].poid);
                     foreach (MatchModel model in room.matchList)
                     {
                         //RoomPlayerinfoToken token = new RoomPlayerinfoToken();

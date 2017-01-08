@@ -16,7 +16,7 @@ namespace BBParadise_Server
         string sguid = "52a06444-ff13-654b-bfa1-29da9f7124dd";
 
         string iguid_player = "2a0ccd1d-f564-f74f-b1c6-d2a6157b8b59";
-        string sguid_game = "";
+        string sguid_game = "c4345a29-310f-d241-b95c-77928bf819c6";
         string lguid = "";
 
         byte[] certificate = {0x43, 0x13, 0xbd, 0x25, 0x4e, 0x7b, 0xa3, 0x4b, 0x86, 0x13, 0xa8, 0xa5, 0x49,
