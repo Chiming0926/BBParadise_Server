@@ -22,8 +22,6 @@ namespace BBParadise_Server
 
             MatchModel model = new MatchModel();
 
-
-
             model.account = acc;
             model.poid = poid;
             model.nickname = nick;
@@ -38,7 +36,7 @@ namespace BBParadise_Server
                 lock (matchList)
                 {
                     Console.WriteLine("Wait for Match User" + matchList.Count);
-                    if (matchList.Count <= 4)
+                    if (matchList.Count < 5) 
                     {
                         matchList.Add(self);
                         match_people.Text = matchList.Count.ToString();
@@ -46,6 +44,7 @@ namespace BBParadise_Server
                     }
                     else
                     {
+						matchList.Add(self);
                         GameRoom go = new GameRoom();
                         Console.WriteLine("before matchList.Count = " + matchList.Count);
                         for (int i=0; i< matchList.Count; i++)
@@ -84,9 +83,8 @@ namespace BBParadise_Server
                 if (code == 0)
                 {
                     Console.WriteLine("CB_EnterGameRoom Success: ");
-                    //                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[0].matchCode, room.model[0].poid);
-                    //                    ag.PrivacySend("dp_room:" + scene.sid + "/" + room.model[1].matchCode, room.model[1].poid);
-                    foreach (MatchModel model in room.matchList)
+                    room.sendGameSceneToAllUser(ag);
+                    foreach (MatchModel model in room.playerList)
                     {
                         //RoomPlayerinfoToken token = new RoomPlayerinfoToken();
                         //token.account = model.account;
@@ -159,46 +157,46 @@ namespace BBParadise_Server
             }
         }
 
-        //    void PlayerReady(string msg, GameRoom room)
-        //    {
-        //        int poid = int.Parse(msg);
-        //        foreach (MatchModel md in room.model)
-        //        {
-        //            if (md.poid == poid)
-        //            {
-        //                md.ready = true;
-        //                GameStartCheck(room);
-        //                break;
-        //            }
-        //        }
-        //    }
+        void PlayerReady(string msg, GameRoom room)
+        {
+            int poid = int.Parse(msg);
+            foreach (MatchModel md in room.playerList)
+            {
+                if (md.poid == poid)
+                {
+                    md.ready = true;
+                    GameStartCheck(room);
+                    break;
+                }
+            }
+        }
 
-        //    void GameStartCheck(GameRoom room)
-        //    {
-        //        bool start = true;
-        //        if (room.gameover) start = false;
-        //        foreach (MatchModel md in room.model)
-        //        {
-        //            if (!md.getData) start = false;
-        //            if (!md.ready) start = false;
-        //            if (md.cancelMatch) start = false;
-        //        }
-        //        if (start)
-        //            GameStart(room);
-        //    }
+        void GameStartCheck(GameRoom room)
+        {
+            bool start = true;
+        //    if (room.gameover) start = false;
+            foreach (MatchModel md in room.playerList)
+            {
+            //    if (!md.getData) start = false;
+                if (!md.ready) start = false;
+            //    if (md.cancelMatch) start = false;
+            }
+            if (start)
+                GameStart(room);
+        }
 
-        //    void GameStart(GameRoom room)
-        //    {
-        //        room.aTimer.Enabled = false;
-        //        room.bTimer.Enabled = true;
-        //        room.turn = 1;
-        //        room.scene.Send("dp_start:" + room.model[0].poid);
-        //        foreach (MatchModel m in room.model)
-        //        {
-        //            room.scene.Send("dp_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
-        //        }
+        void GameStart(GameRoom room)
+        {
+        //    room.aTimer.Enabled = false;
+        //    room.bTimer.Enabled = true;
+        //    room.turn = 1;
+        //    room.scene.Send("dp_start:" + room.model[0].poid);
+            foreach (MatchModel m in room.playerList)
+            {
+                room.scene.Send("dp_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
+            }
 
-        //    }
+        }
 
         //    void CancelMatchCheck(int poid)
         //    {

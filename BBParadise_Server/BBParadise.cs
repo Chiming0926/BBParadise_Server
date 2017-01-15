@@ -84,29 +84,30 @@ namespace BBParadise_Server
 
         void GameMessageIn(string msg, int delay, ArcaletScene scene)
         {
-            /*
+            
             try
             {
                 Console.WriteLine("GameMessageIn: " + msg);
                 GameRoom room = scene.token as GameRoom;
                 string[] cmds = msg.Split(':');
 
+
                 if (cmds[0] == "dp_draw" || cmds[0] == "dp_gameover" || cmds[0] == "dp_timeup")
                 {
-                    room.GameOver();
-                    room.LeaveScene();
+                //    room.GameOver();
+               //     room.LeaveScene();
                 }
 
-                if (room.gameover)
-                    return;
+                //if (room.gameover)
+                //    return;
 
                 switch (cmds[0])
                 {
                     case "ready": PlayerReady(cmds[1], room); break;
-                    case "slot": SlotCheck(cmds[1], room); break;
+                //    case "slot": SlotCheck(cmds[1], room); break;
                 }
             }
-            catch (Exception) { }*/
+            catch (Exception) { }
         }
 
         void OnStateChanged(int state, int code, ArcaletGame game)
