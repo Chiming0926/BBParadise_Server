@@ -198,33 +198,33 @@ namespace BBParadise_Server
 
         }
 
-        //    void CancelMatchCheck(int poid)
-        //    {
-        //        lock (matchList)
-        //        {
-        //            foreach (MatchModel model in matchList)
-        //            {
-        //                if (model.poid == poid)
-        //                {
-        //                    matchList.Remove(model);
-        //                    text3.Text = matchList.Count.ToString();
-        //                    return;
-        //                }
-        //            }
-        //        }
+        void CancelMatchCheck(int poid)
+        {
+            lock (matchList)
+            {
+                foreach (MatchModel model in matchList)
+                {
+                    if (model.poid == poid)
+                    {
+                        matchList.Remove(model);
+                        match_people.Text = "Match Player = " + matchList.Count;
+                        return;
+                    }
+                }
+            }
 
-        //        lock (roomList)
-        //        {
-        //            foreach (GameRoom room in roomList)
-        //            {
-        //                foreach (MatchModel model in room.model)
-        //                {
-        //                    if (model.poid == poid)
-        //                        model.cancelMatch = true;
-        //                }
-        //            }
-        //        }
-        //    }
+            lock (roomList)
+            {
+                foreach (GameRoom room in roomList)
+                {
+                    foreach (MatchModel model in room.playerList)
+                    {
+                        if (model.poid == poid)
+                            model.cancelMatch = true;
+                    }
+                }
+            }
+        }
 
         void AddRoomList(GameRoom r)
         {
