@@ -39,6 +39,9 @@ namespace BBParadise_Server
         {
             InitializeComponent();
             login();
+			Online_People.Text = "Online Player = 0";
+			match_people.Text = "Match Player = 0";
+			GameRoom.Text = "Game room = 0";
         }
 
         void login()

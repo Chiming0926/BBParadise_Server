@@ -25,6 +25,7 @@ namespace BBParadise_Server
             {
                 onlinePlayerNumber++;
                 Console.WriteLine("onlinePlayerNumber = " + onlinePlayerNumber);
+				Online_People.Text = "Online Player = " + onlinePlayerNumber;
                 ag.PrivacySend("dp_new:" + ag.poid, poid);
             }
             else
@@ -41,6 +42,7 @@ namespace BBParadise_Server
 
             onlinePlayerNumber--;
             Console.WriteLine("onlinePlayerNumber = " + onlinePlayerNumber);
+			Online_People.Text = "Online Player = " + onlinePlayerNumber;
         }
     }
 }

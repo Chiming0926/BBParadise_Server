@@ -36,10 +36,11 @@ namespace BBParadise_Server
                 lock (matchList)
                 {
                     Console.WriteLine("Wait for Match User" + matchList.Count);
-                    if (matchList.Count < 5) 
-                    {
+                    //if (matchList.Count < 5) 
+					if (matchList.Count < 1) /* just for test */
+					{
                         matchList.Add(self);
-                        match_people.Text = matchList.Count.ToString();
+						match_people.Text = "Match Player = " + matchList.Count;
                         Console.WriteLine(" in Wait for Match User" + matchList.Count);
                     }
                     else
@@ -51,11 +52,10 @@ namespace BBParadise_Server
                         {
                             if (go.addPlayer(matchList[i]) == false)
                                 break;
-                            match_people.Text = matchList.Count.ToString();
                         }
                         DoMatch(go);
                         matchList.Clear();
-                        match_people.Text = matchList.Count.ToString();
+                        match_people.Text = "Match Player = " + matchList.Count;
                         Console.WriteLine("after Wait for Match User" + matchList.Count);
                     }
                 }
@@ -231,7 +231,7 @@ namespace BBParadise_Server
             lock (roomList)
             {
                 roomList.Add(r);
-                GameRoom.Text = roomList.Count.ToString();
+                GameRoom.Text = "Game room = " + matchList.Count;
             }
         }
 
@@ -244,7 +244,7 @@ namespace BBParadise_Server
                     if (room == r)
                     {
                         roomList.Remove(room);
-                        GameRoom.Text = roomList.Count.ToString();
+						GameRoom.Text = "Game room = " + matchList.Count;
                         return;
                     }
                 }
