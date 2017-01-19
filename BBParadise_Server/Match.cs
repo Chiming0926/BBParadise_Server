@@ -159,7 +159,8 @@ namespace BBParadise_Server
 
         void PlayerReady(string msg, GameRoom room)
         {
-            int poid = int.Parse(msg);
+			string[] m = msg.Split('/');
+            int poid = int.Parse(m[1]);
             foreach (MatchModel md in room.playerList)
             {
                 if (md.poid == poid)

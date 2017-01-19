@@ -106,7 +106,7 @@ namespace BBParadise_Server
 
                 switch (cmds[0])
                 {
-                    case "ready": PlayerReady(cmds[1], room); break;
+                    case "bb_ready": PlayerReady(cmds[1], room); break;
                 //    case "slot": SlotCheck(cmds[1], room); break;
                 }
             }
