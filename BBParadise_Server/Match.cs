@@ -12,6 +12,8 @@ namespace BBParadise_Server
         List<MatchModel> matchList = new List<MatchModel>();
         List<GameRoom> roomList = new List<GameRoom>();
 
+		private static int MAX_PLAYER = 2;
+
         void DP_Match(string msg)
         {
             string[] m = msg.Split('/');
@@ -37,7 +39,7 @@ namespace BBParadise_Server
                 {
                     Console.WriteLine("Wait for Match User" + matchList.Count);
                     //if (matchList.Count < 5) 
-					if (matchList.Count < 1) /* just for test */
+					if (matchList.Count < (MAX_PLAYER-1)) /* just for test */
 					{
                         matchList.Add(self);
 						match_people.Text = "Match Player = " + matchList.Count;
@@ -174,10 +176,12 @@ namespace BBParadise_Server
 
         void GameStartCheck(GameRoom room)
         {
+            Console.WriteLine("@@@@@@@@@@@@@123");
             bool start = true;
         //    if (room.gameover) start = false;
             foreach (MatchModel md in room.playerList)
             {
+                Console.WriteLine("@@@@@@@@@@@@@456 md.ready  \n", md.ready);
             //    if (!md.getData) start = false;
                 if (!md.ready) start = false;
             //    if (md.cancelMatch) start = false;
@@ -194,7 +198,7 @@ namespace BBParadise_Server
         //    room.scene.Send("dp_start:" + room.model[0].poid);
             foreach (MatchModel m in room.playerList)
             {
-                room.scene.Send("dp_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
+                room.scene.Send("bb_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
             }
 
         }
@@ -232,7 +236,7 @@ namespace BBParadise_Server
             lock (roomList)
             {
                 roomList.Add(r);
-                GameRoom.Text = "Game room = " + matchList.Count;
+                GameRoom.Text = "Game room = " + roomList.Count;
             }
         }
 
