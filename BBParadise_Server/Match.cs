@@ -277,6 +277,7 @@ namespace BBParadise_Server
         internal int lose = 0;
         internal int draw = 0;
 
+		internal bool death = false;
         internal bool getData = false;
         internal bool ready = false;
         internal bool cancelMatch = false;

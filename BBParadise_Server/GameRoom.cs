@@ -9,8 +9,10 @@ namespace BBParadise_Server
 {
     internal class GameRoom
     {
-        static int MAX_PLAYER = 6;
+        static int MAX_PLAYER = 2;
         internal List<MatchModel> playerList = new List<MatchModel>();
+		internal List<MatchModel> team1List = new List<MatchModel>();
+		internal List<MatchModel> team2List = new List<MatchModel>();
         internal ArcaletScene scene = null;
 
         internal bool addPlayer(MatchModel model)
@@ -24,15 +26,62 @@ namespace BBParadise_Server
                 	return false;
                 }
                 playerList.Add(model);
+
+				if (playerList.Count > (playerList.Count / 2))
+					team2List.Add(model);
+				else
+					team1List.Add(model);
                 return true;
             }
         }
+
+		internal void setGameScene(ArcaletScene sn)
+		{
+			scene = sn;
+		}
+
+		void handleDeathMsg(string msg)
+		{
+			string[] m = msg.Split('/');
+			int cnt = 0;
+			foreach (MatchModel data in team1List)
+	        {
+	            if (data.player_account == m[0])
+	            {
+	                data.death = true;
+	            }
+				if (data.death == true)
+					cnt++;
+	        }
+
+			if (cnt >= (MAX_PLAYER >> 1))
+				scene.Send("bb_over:team2");
+			foreach (MatchModel data in team2List)
+	        {
+	            if (data.player_account == m[0])
+	            {
+	                data.death = true;
+					break;
+	            }
+				if (data.death == true)
+					cnt++;
+	        }
+			if (cnt >= (MAX_PLAYER >> 1))
+				scene.Send("bb_over:team1");
+		}
 
 		internal void handleGameMessage(string msg)
 		{
 			Console.WriteLine("handleGameMessage: " + msg);
 			string[] cmds = msg.Split(':');
-			
+			switch (cmds[0])
+            {
+                case "bb_death":
+					handleDeathMsg(cmds[1]);
+                    break;
+				default:
+             		break;
+			}
 		}
 
 		internal void sendUserInfoToAllUser()
