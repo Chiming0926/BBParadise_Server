@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static BBParadise_Server.BBParadise;
 
 namespace BBParadise_Server
@@ -26,11 +27,17 @@ namespace BBParadise_Server
                 	return false;
                 }
                 playerList.Add(model);
-
-				if (playerList.Count > (playerList.Count / 2))
+				Console.WriteLine("playerList.Count = " + playerList.Count);
+				if (playerList.Count > (MAX_PLAYER / 2))
+				{
+					Console.WriteLine("add to team2");
 					team2List.Add(model);
+				}
 				else
+				{
+					Console.WriteLine("add to team1");
 					team1List.Add(model);
+				}
                 return true;
             }
         }
@@ -46,7 +53,8 @@ namespace BBParadise_Server
 			int cnt = 0;
 			foreach (MatchModel data in team1List)
 	        {
-	            if (data.player_account == m[0])
+                Console.WriteLine("team1 member:" + data.account + " , msg = " + m[0]);
+	            if (data.account == m[0])
 	            {
 	                data.death = true;
 	            }
@@ -55,19 +63,34 @@ namespace BBParadise_Server
 	        }
 
 			if (cnt >= (MAX_PLAYER >> 1))
-				scene.Send("bb_over:team2");
-			foreach (MatchModel data in team2List)
+			{
+				Console.WriteLine("bb_over:team1 GGGGGGGGGGGG");
+				scene.Send("bb_over:team1");
+                DialogResult result;
+                string caption = "Message Box";
+                string show_text = "bb_over:team1";
+                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK);
+            }
+
+			cnt = 0;
+            foreach (MatchModel data in team2List)
 	        {
-	            if (data.player_account == m[0])
+                Console.WriteLine("team2 member:" + data.account + " , msg = " + m[0]);
+                if (data.account == m[0])
 	            {
 	                data.death = true;
-					break;
 	            }
 				if (data.death == true)
 					cnt++;
 	        }
 			if (cnt >= (MAX_PLAYER >> 1))
-				scene.Send("bb_over:team1");
+			{
+                scene.Send("bb_over:team2");
+                DialogResult result;
+                string caption = "Message Box";
+                string show_text = "bb_over:team2";
+                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK);
+            }
 		}
 
 		internal void handleGameMessage(string msg)

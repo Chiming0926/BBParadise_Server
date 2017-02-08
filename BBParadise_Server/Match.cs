@@ -176,15 +176,10 @@ namespace BBParadise_Server
 
         void GameStartCheck(GameRoom room)
         {
-            Console.WriteLine("@@@@@@@@@@@@@123");
             bool start = true;
-        //    if (room.gameover) start = false;
             foreach (MatchModel md in room.playerList)
             {
-                Console.WriteLine("@@@@@@@@@@@@@456 md.ready  \n", md.ready);
-            //    if (!md.getData) start = false;
                 if (!md.ready) start = false;
-            //    if (md.cancelMatch) start = false;
             }
             if (start)
                 GameStart(room);
@@ -199,8 +194,7 @@ namespace BBParadise_Server
             foreach (MatchModel m in room.playerList)
             {
                 room.scene.Send("bb_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
-            }
-
+        	}
         }
 
         void CancelMatchCheck(int poid)
@@ -249,7 +243,7 @@ namespace BBParadise_Server
                     if (room == r)
                     {
                         roomList.Remove(room);
-						GameRoom.Text = "Game room = " + matchList.Count;
+						GameRoom.Text = "Game room = " + roomList.Count;
                         return;
                     }
                 }

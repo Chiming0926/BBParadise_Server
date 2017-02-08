@@ -106,9 +106,12 @@ namespace BBParadise_Server
 
                 switch (cmds[0])
                 {
-                    case "bb_ready": PlayerReady(cmds[1], room); break;
-                //    case "slot": SlotCheck(cmds[1], room); break;
+                    case "bb_ready": PlayerReady(cmds[1], room); return;
+                    case "bb_over": RemoveRoomList(room); break;
                 }
+
+				/* if msg doesn't handle, send to room's message-center */
+				room.handleGameMessage(msg);
             }
             catch (Exception) { }
         }
