@@ -64,12 +64,11 @@ namespace BBParadise_Server
 
 			if (cnt >= (MAX_PLAYER >> 1))
 			{
-				Console.WriteLine("bb_over:team1 GGGGGGGGGGGG");
 				scene.Send("bb_over:team1");
-                DialogResult result;
+            /*  DialogResult result;
                 string caption = "Message Box";
                 string show_text = "bb_over:team1";
-                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK);
+                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK); */
             }
 
 			cnt = 0;
@@ -86,12 +85,29 @@ namespace BBParadise_Server
 			if (cnt >= (MAX_PLAYER >> 1))
 			{
                 scene.Send("bb_over:team2");
-                DialogResult result;
+            /*  DialogResult result;
                 string caption = "Message Box";
                 string show_text = "bb_over:team2";
-                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK);
+                result = MessageBox.Show(show_text, caption, MessageBoxButtons.OK); */
             }
 		}
+		
+		internal void LeaveScene()
+        {
+            scene.Leave(CB_Leave, 5);
+        }
+
+        void CB_Leave(int code, object token)
+        {
+            if (code != 0)
+            {
+                int retry = (int)token;
+                if (retry <= 0)
+                    return;
+                retry--;
+                scene.Leave(CB_Leave, retry);
+            }
+        }
 
 		internal void handleGameMessage(string msg)
 		{
@@ -102,6 +118,9 @@ namespace BBParadise_Server
                 case "bb_death":
 					handleDeathMsg(cmds[1]);
                     break;
+				case "bb_over":
+					LeaveScene();
+					break;
 				default:
              		break;
 			}

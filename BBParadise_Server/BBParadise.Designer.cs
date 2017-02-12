@@ -81,7 +81,9 @@
             this.Controls.Add(this.GameRoom);
             this.Controls.Add(this.match_people);
             this.Controls.Add(this.lable_status);
+            this.Location = new System.Drawing.Point(20, 20);
             this.Name = "BBParadise";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
