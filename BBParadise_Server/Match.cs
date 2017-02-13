@@ -12,7 +12,18 @@ namespace BBParadise_Server
         List<MatchModel> matchList = new List<MatchModel>();
         List<GameRoom> roomList = new List<GameRoom>();
 
-		private static int MAX_PLAYER = 2;
+		private static int MAX_PLAYER = 2; /* just for testing */
+
+		void SendMatchMessage()
+		{
+			string msg = "bb_match_data:";
+			/* parse the message */
+			foreach (MatchModel md in matchList)
+                msg += md.fbId + "/";
+			/* send to all clients */
+			foreach (MatchModel md in matchList)
+	            ag.PrivacySend(msg, md.poid);
+		}
 
         void DP_Match(string msg)
         {
@@ -21,6 +32,7 @@ namespace BBParadise_Server
             int poid = int.Parse(m[1]);
             string nick = m[2];
             string code = m[3];
+			string fbId = m[4];
 
             MatchModel model = new MatchModel();
 
@@ -28,6 +40,7 @@ namespace BBParadise_Server
             model.poid = poid;
             model.nickname = nick;
             model.matchCode = code;
+			model.fbId = fbId;
             SearchTarget(model);
         }
 
@@ -37,13 +50,11 @@ namespace BBParadise_Server
             {
                 lock (matchList)
                 {
-                    Console.WriteLine("Wait for Match User" + matchList.Count);
-                    //if (matchList.Count < 5) 
-					if (matchList.Count < (MAX_PLAYER-1)) /* just for test */
+					if (matchList.Count < (MAX_PLAYER-1))
 					{
                         matchList.Add(self);
 						match_people.Text = "Match Player = " + matchList.Count;
-                        Console.WriteLine(" in Wait for Match User" + matchList.Count);
+						SendMatchMessage();
                     }
                     else
                     {
@@ -266,7 +277,8 @@ namespace BBParadise_Server
         internal int itemID = 0;
         internal string nickname = "";
         internal string matchCode = "";
-
+		internal string fbId = "";
+		
         internal int win = 0;
         internal int lose = 0;
         internal int draw = 0;
