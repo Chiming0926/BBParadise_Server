@@ -38,7 +38,7 @@ namespace BBParadise_Server
         {
             string[] m = msg.Split('/');
             int poid = int.Parse(m[1]);
-            //CancelMatchCheck(poid);
+            CancelMatchCheck(poid);
 
             onlinePlayerNumber--;
             Console.WriteLine("onlinePlayerNumber = " + onlinePlayerNumber);

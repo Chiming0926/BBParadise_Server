@@ -12,7 +12,7 @@ namespace BBParadise_Server
         List<MatchModel> matchList = new List<MatchModel>();
         List<GameRoom> roomList = new List<GameRoom>();
 
-		private static int MAX_PLAYER = 2; /* just for testing */
+		private static int MAX_PLAYER = 6; /* just for testing */
 
 		void SendMatchMessage()
 		{
