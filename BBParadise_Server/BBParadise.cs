@@ -129,5 +129,10 @@ namespace BBParadise_Server
             else
                 lable_status.Text = "Login Failed " + code;
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
