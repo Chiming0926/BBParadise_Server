@@ -12,7 +12,7 @@ namespace BBParadise_Server
         List<MatchModel> matchList = new List<MatchModel>();
         List<GameRoom> roomList = new List<GameRoom>();
 
-		private static int MAX_PLAYER = 6; /* just for testing */
+		private static int MAX_PLAYER = 2; /* just for testing */
 
 		void SendMatchMessage()
 		{
@@ -176,6 +176,7 @@ namespace BBParadise_Server
             int poid = int.Parse(m[1]);
             foreach (MatchModel md in room.playerList)
             {
+                //room.scene.Send("bb_player:" + md.poid + "/" + md.account + "/" + md.nickname + "/" + md.win + "/" + md.lose + "/" + md.draw);
                 if (md.poid == poid)
                 {
                     md.ready = true;
@@ -188,6 +189,7 @@ namespace BBParadise_Server
         void GameStartCheck(GameRoom room)
         {
             bool start = true;
+            Console.WriteLine("room.playerList.Count = " + room.playerList.Count);
             foreach (MatchModel md in room.playerList)
             {
                 if (!md.ready) start = false;
@@ -198,13 +200,10 @@ namespace BBParadise_Server
 
         void GameStart(GameRoom room)
         {
-        //    room.aTimer.Enabled = false;
-        //    room.bTimer.Enabled = true;
-        //    room.turn = 1;
-        //    room.scene.Send("dp_start:" + room.model[0].poid);
-            foreach (MatchModel m in room.playerList)
+			foreach (MatchModel m in room.playerList)
             {
-                room.scene.Send("bb_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + m.win + "/" + m.lose + "/" + m.draw);
+                Console.WriteLine("bb_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + room.playerList[0].account + "/" + m.win + "/" + m.lose + "/" + m.draw);
+                room.scene.Send("bb_player:" + m.poid + "/" + m.account + "/" + m.nickname + "/" + room.playerList[0].account + "/" + m.win + "/" + m.lose + "/" + m.draw);
         	}
         }
 
